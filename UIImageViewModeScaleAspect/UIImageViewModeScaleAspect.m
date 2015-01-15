@@ -13,7 +13,6 @@
 
 @property (readwrite, nonatomic) CGRect newFrameWrapper;
 @property (readwrite, nonatomic) CGRect newFrameImg;
-@property (strong, nonatomic) UIImageView *img;
 
 @end
 
@@ -30,8 +29,9 @@
     self = [super init];
     if (self) {
         
-        self.img             = [[UIImageView alloc]init];
-        self.img.contentMode = UIViewContentModeCenter;
+        _img             = [[UIImageView alloc]init];
+        _img.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        _img.contentMode = UIViewContentModeCenter;
         [self addSubview:_img];
         
         self.clipsToBounds = YES;
@@ -51,8 +51,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.img             = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        self.img.contentMode = UIViewContentModeCenter;
+        _img             = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        _img.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        _img.contentMode = UIViewContentModeCenter;
         [self addSubview:_img];
         
         self.clipsToBounds = YES;
@@ -189,9 +190,9 @@
         float ratioImg = (_img.image.size.width) / (_img.image.size.height);
         
         if ([self choiseFunctionWithRationImg:ratioImg ForFrame:self.frame]) {
-            self.img.frame = CGRectMake( - (self.frame.size.height * ratioImg - self.frame.size.width) / 2.0f, 0, self.frame.size.height * ratioImg, self.frame.size.height);
+            _img.frame = CGRectMake( - (self.frame.size.height * ratioImg - self.frame.size.width) / 2.0f, 0, self.frame.size.height * ratioImg, self.frame.size.height);
         }else{
-            self.img.frame = CGRectMake(0, - (self.frame.size.width / ratioImg - self.frame.size.height) / 2.0f, self.frame.size.width, self.frame.size.width / ratioImg);
+            _img.frame = CGRectMake(0, - (self.frame.size.width / ratioImg - self.frame.size.height) / 2.0f, self.frame.size.width, self.frame.size.width / ratioImg);
         }
     }else{
         NSLog(@"ERROR, UIImageView %@ don't have UIImage",self);
@@ -235,7 +236,7 @@
  */
 - (void)animaticToScaleAspectFit{
     
-    self.img.frame = _newFrameImg;
+    _img.frame = _newFrameImg;
     [self setFrameWrapper:_newFrameWrapper];
     
 }
@@ -245,7 +246,7 @@
  */
 - (void)animaticToScaleAspectFill{
     
-    self.img.frame = _newFrameImg;
+    _img.frame = _newFrameImg;
     [self setFrameWrapper:_newFrameWrapper];
     
 }
@@ -268,8 +269,8 @@
  */
 - (void)animateFinishToScaleAspectFill{
     
-    self.img.contentMode = UIViewContentModeScaleAspectFill;
-    self.img.frame  = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    _img.contentMode = UIViewContentModeScaleAspectFill;
+    _img.frame  = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     
 }
 
@@ -277,7 +278,7 @@
 
 - (void)setImage:(UIImage *)image{
     
-    self.img.image = image;
+    _img.image = image;
     
 }
 
@@ -289,7 +290,7 @@
 
 - (void)setContentMode:(UIViewContentMode)contentMode{
     
-    self.img.contentMode = contentMode;
+    _img.contentMode = contentMode;
     
 }
 
@@ -302,7 +303,7 @@
 - (void)setFrame:(CGRect)frame{
     
     [super setFrame:frame];
-    self.img.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
+    _img.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
 }
 
 - (void)setFrameWrapper:(CGRect)frame{
